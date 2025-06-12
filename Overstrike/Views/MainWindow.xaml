@@ -10,10 +10,6 @@
         WindowStartupLocation="CenterScreen"
         Icon="/Assets/overstrike.ico">
     
-    <Window.DataContext>
-        <vm:MainViewModel/>
-    </Window.DataContext>
-    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>

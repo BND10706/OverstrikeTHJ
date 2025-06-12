@@ -4,9 +4,15 @@
     <Application.Resources>
         <!-- Application-wide resources -->
         <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Styles/MainStyles.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
+            <!-- Define basic application styles here -->
+            <Style TargetType="Button">
+                <Setter Property="Padding" Value="10,5"/>
+                <Setter Property="Margin" Value="5"/>
+            </Style>
+            
+            <Style TargetType="TextBlock">
+                <Setter Property="Margin" Value="5"/>
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
