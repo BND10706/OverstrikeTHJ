@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Overstrike.Services;
 using Overstrike.ViewModels;
 using Overstrike.Views;
+using System;
 using System.Windows;
 
 namespace Overstrike;
@@ -14,6 +15,12 @@ namespace Overstrike;
 public partial class App : Application
 {
     private IHost? _host;
+
+    // Static accessor for the services provider
+    public IServiceProvider? Services => _host?.Services;
+
+    // Static accessor for the current App instance
+    public new static App Current => (App)Application.Current;
 
     protected override void OnStartup(StartupEventArgs e)
     {

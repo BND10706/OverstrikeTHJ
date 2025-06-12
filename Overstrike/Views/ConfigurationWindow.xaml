@@ -1,0 +1,56 @@
+<Window x:Class="Overstrike.Views.ConfigurationWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Overstrike.Views"
+        mc:Ignorable="d"
+        Title="Overstrike Configuration" Height="450" Width="600"
+        WindowStartupLocation="CenterScreen">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="Overstrike Configuration" FontSize="18" FontWeight="Bold" Margin="0,0,0,10"/>
+
+        <!-- Configuration form will go here -->
+        <ScrollViewer Grid.Row="1">
+            <StackPanel>
+                <!-- Log file configuration -->
+                <GroupBox Header="Log Settings" Margin="0,5">
+                    <Grid Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Log File Path:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding LogFilePath}" VerticalAlignment="Center"/>
+                        <Button Grid.Row="0" Grid.Column="2" Content="Browse..." Command="{Binding BrowseLogFileCommand}" Margin="5,0,0,0"/>
+                    </Grid>
+                </GroupBox>
+                
+                <!-- Display settings -->
+                <GroupBox Header="Display Settings" Margin="0,5">
+                    <StackPanel Margin="5">
+                        <CheckBox Content="Show Damage Popups" IsChecked="{Binding ShowDamagePopups}" Margin="0,5"/>
+                        <CheckBox Content="Show DPS Window" IsChecked="{Binding ShowDpsWindow}" Margin="0,5"/>
+                        <CheckBox Content="Enable Sound Effects" IsChecked="{Binding EnableSoundEffects}" Margin="0,5"/>
+                    </StackPanel>
+                </GroupBox>
+            </StackPanel>
+        </ScrollViewer>
+        
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+            <Button Content="Save" Command="{Binding SaveCommand}" Width="80" Margin="5,0"/>
+            <Button Content="Cancel" Command="{Binding CancelCommand}" Width="80" Margin="5,0"/>
+        </StackPanel>
+    </Grid>
+</Window>

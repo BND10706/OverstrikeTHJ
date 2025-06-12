@@ -8,7 +8,7 @@
         <AssemblyDescription>EverQuest Overlay Application</AssemblyDescription>
         <AssemblyProduct>Overstrike</AssemblyProduct>
         <AssemblyCompany>BND10706</AssemblyCompany>
-        <AssemblyCopyright>Copyright © 2024</AssemblyCompany>
+        <AssemblyCopyright>Copyright © 2024</AssemblyCopyright>
         <AssemblyVersion>1.0.0.0</AssemblyVersion>
         <FileVersion>1.0.0.0</FileVersion>
         <ApplicationIcon>Assets\overstrike.ico</ApplicationIcon>
