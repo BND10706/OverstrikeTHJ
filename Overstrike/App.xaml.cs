@@ -38,6 +38,7 @@ public partial class App : Application
                 services.AddTransient<MainViewModel>();
                 services.AddTransient<ConfigurationViewModel>();
                 services.AddTransient<DpsViewModel>();
+                services.AddTransient<PopupConfigViewModel>();
 
                 // Register Views
                 services.AddTransient<MainWindow>();

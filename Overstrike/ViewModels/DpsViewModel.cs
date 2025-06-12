@@ -1,6 +1,9 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using Overstrike.Models;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace Overstrike.ViewModels;
 
@@ -50,12 +53,12 @@ public partial class DpsViewModel : ObservableObject
 }
 
 /// <summary>
-/// View model for configuration windows
+/// View model for popup configuration
 /// </summary>
-public partial class ConfigurationViewModel : ObservableObject
+public partial class PopupConfigViewModel : ObservableObject
 {
     [ObservableProperty]
-    private OverstrikeConfiguration _configuration = new();
+    private OverstrikeConfiguration _popupConfiguration = new();
 
     [ObservableProperty]
     private Placement _selectedPlacement = new();
@@ -68,7 +71,7 @@ public partial class ConfigurationViewModel : ObservableObject
 
     public void LoadConfiguration(OverstrikeConfiguration configuration)
     {
-        Configuration = configuration;
+        PopupConfiguration = configuration;
         UpdateSelectedPlacement();
     }
 
@@ -76,23 +79,23 @@ public partial class ConfigurationViewModel : ObservableObject
     {
         SelectedPlacement = SelectedCategory switch
         {
-            PopupCategory.MeleeHitOut => Configuration.MeleeHitOut,
-            PopupCategory.MeleeHitIn => Configuration.MeleeHitIn,
-            PopupCategory.MeleeCritOut => Configuration.MeleeCritOut,
-            PopupCategory.MeleeCritIn => Configuration.MeleeCritIn,
-            PopupCategory.MeleeMissOut => Configuration.MeleeMissOut,
-            PopupCategory.MeleeMissIn => Configuration.MeleeMissIn,
-            PopupCategory.SpellHitOut => Configuration.SpellHitOut,
-            PopupCategory.SpellHitIn => Configuration.SpellHitIn,
-            PopupCategory.SpellCritOut => Configuration.SpellCritOut,
-            PopupCategory.SpellCritIn => Configuration.SpellCritIn,
-            PopupCategory.SpellMissOut => Configuration.SpellMissOut,
-            PopupCategory.SpellMissIn => Configuration.SpellMissIn,
-            PopupCategory.HealHitOut => Configuration.HealHitOut,
-            PopupCategory.HealHitIn => Configuration.HealHitIn,
-            PopupCategory.HealCritOut => Configuration.HealCritOut,
-            PopupCategory.HealCritIn => Configuration.HealCritIn,
-            PopupCategory.RuneHitOut => Configuration.RuneHitOut,
+            PopupCategory.MeleeHitOut => PopupConfiguration.MeleeHitOut,
+            PopupCategory.MeleeHitIn => PopupConfiguration.MeleeHitIn,
+            PopupCategory.MeleeCritOut => PopupConfiguration.MeleeCritOut,
+            PopupCategory.MeleeCritIn => PopupConfiguration.MeleeCritIn,
+            PopupCategory.MeleeMissOut => PopupConfiguration.MeleeMissOut,
+            PopupCategory.MeleeMissIn => PopupConfiguration.MeleeMissIn,
+            PopupCategory.SpellHitOut => PopupConfiguration.SpellHitOut,
+            PopupCategory.SpellHitIn => PopupConfiguration.SpellHitIn,
+            PopupCategory.SpellCritOut => PopupConfiguration.SpellCritOut,
+            PopupCategory.SpellCritIn => PopupConfiguration.SpellCritIn,
+            PopupCategory.SpellMissOut => PopupConfiguration.SpellMissOut,
+            PopupCategory.SpellMissIn => PopupConfiguration.SpellMissIn,
+            PopupCategory.HealHitOut => PopupConfiguration.HealHitOut,
+            PopupCategory.HealHitIn => PopupConfiguration.HealHitIn,
+            PopupCategory.HealCritOut => PopupConfiguration.HealCritOut,
+            PopupCategory.HealCritIn => PopupConfiguration.HealCritIn,
+            PopupCategory.RuneHitOut => PopupConfiguration.RuneHitOut,
             _ => new Placement()
         };
     }
