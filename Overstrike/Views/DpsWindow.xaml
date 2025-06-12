@@ -1,0 +1,138 @@
+<Window x:Class="Overstrike.Views.DpsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="{Binding WindowTitle}" 
+        Height="400" Width="600"
+        WindowStyle="ToolWindow"
+        Topmost="True"
+        ShowInTaskbar="False"
+        Background="#E0000000"
+        AllowsTransparency="True">
+    
+    <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="5">
+        <Grid Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            
+            <!-- Header -->
+            <Border Grid.Row="0" Background="#AA000000" CornerRadius="3" Padding="5" Margin="0,0,0,5">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <TextBlock Grid.Column="0" Text="DPS Meter" 
+                              Foreground="White" FontWeight="Bold" FontSize="14"/>
+                    <Button Grid.Column="1" Content="×" 
+                           Width="20" Height="20" 
+                           Background="Red" Foreground="White"
+                           BorderThickness="0"
+                           Click="CloseButton_Click"/>
+                </Grid>
+            </Border>
+            
+            <!-- Summary Stats -->
+            <Border Grid.Row="1" Background="#AA333333" CornerRadius="3" Padding="5" Margin="0,0,0,5">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="Total DPS" Foreground="LightGray" FontSize="10"/>
+                        <TextBlock Text="{Binding TotalEncounterDps, StringFormat=N1}" 
+                                  Foreground="Yellow" FontWeight="Bold" FontSize="14"/>
+                    </StackPanel>
+                    
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Text="Duration" Foreground="LightGray" FontSize="10"/>
+                        <TextBlock Text="{Binding EncounterDuration, StringFormat=mm\\:ss}" 
+                                  Foreground="LightBlue" FontWeight="Bold" FontSize="14"/>
+                    </StackPanel>
+                    
+                    <StackPanel Grid.Column="2">
+                        <TextBlock Text="Events" Foreground="LightGray" FontSize="10"/>
+                        <TextBlock Text="{Binding TotalDamageEvents, StringFormat=N0}" 
+                                  Foreground="LightGreen" FontWeight="Bold" FontSize="14"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+            
+            <!-- DPS Data Grid -->
+            <DataGrid Grid.Row="2" 
+                     ItemsSource="{Binding PlayerDpsData}"
+                     AutoGenerateColumns="False"
+                     IsReadOnly="True"
+                     GridLinesVisibility="None"
+                     HeadersVisibility="Column"
+                     CanUserResizeColumns="True"
+                     CanUserSortColumns="True"
+                     Background="Transparent"
+                     BorderThickness="0">
+                
+                <DataGrid.Resources>
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="Background" Value="#AA444444"/>
+                        <Setter Property="Foreground" Value="White"/>
+                        <Setter Property="FontWeight" Value="Bold"/>
+                        <Setter Property="Padding" Value="5,3"/>
+                    </Style>
+                    <Style TargetType="DataGridCell">
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="Foreground" Value="White"/>
+                        <Setter Property="BorderThickness" Value="0"/>
+                        <Setter Property="Padding" Value="5,2"/>
+                    </Style>
+                    <Style TargetType="DataGridRow">
+                        <Setter Property="Background" Value="#AA222222"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#AA444444"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.Resources>
+                
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Player" 
+                                      Binding="{Binding PlayerName}"
+                                      Width="120"/>
+                    <DataGridTextColumn Header="DPS" 
+                                      Binding="{Binding Dps, StringFormat=N1}"
+                                      Width="80">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Foreground" Value="Yellow"/>
+                                <Setter Property="FontWeight" Value="Bold"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="Total" 
+                                      Binding="{Binding TotalDamage, StringFormat=N0}"
+                                      Width="80"/>
+                    <DataGridTextColumn Header="Hits" 
+                                      Binding="{Binding HitCount}"
+                                      Width="50"/>
+                    <DataGridTextColumn Header="Crits" 
+                                      Binding="{Binding CritCount}"
+                                      Width="50"/>
+                    <DataGridTextColumn Header="Crit%" 
+                                      Binding="{Binding CritRate, StringFormat=N1}"
+                                      Width="60"/>
+                    <DataGridTextColumn Header="Avg" 
+                                      Binding="{Binding AverageDamage, StringFormat=N0}"
+                                      Width="70"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+    </Border>
+</Window>
