@@ -1,9 +1,13 @@
 <Application x:Class="Overstrike.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="clr-namespace:Overstrike.Converters">
     <Application.Resources>
         <!-- Application-wide resources -->
         <ResourceDictionary>
+            <!-- Converters -->
+            <converters:BoolToTrackingTextConverter x:Key="BoolToTrackingTextConverter" />
+            
             <!-- Define basic application styles here -->
             <Style TargetType="Button">
                 <Setter Property="Padding" Value="10,5"/>
