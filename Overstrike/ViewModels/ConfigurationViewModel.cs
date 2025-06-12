@@ -1,11 +1,13 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Logging;
 using Microsoft.Win32;
 using Overstrike.Models;
 using Overstrike.Services;
 using System;
-using System.Windows;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Windows;
 
 namespace Overstrike.ViewModels
 {
@@ -16,40 +18,40 @@ namespace Overstrike.ViewModels
 
         public string LogFilePath
         {
-            get => _configuration.LogFilePath;
+            get => _configuration.LogPath;
             set
             {
-                _configuration.LogFilePath = value;
+                _configuration.LogPath = value;
                 OnPropertyChanged();
             }
         }
 
         public bool ShowDamagePopups
         {
-            get => _configuration.ShowDamagePopups;
+            get => _configuration.LiveParseEnabled;
             set
             {
-                _configuration.ShowDamagePopups = value;
+                _configuration.LiveParseEnabled = value;
                 OnPropertyChanged();
             }
         }
 
         public bool ShowDpsWindow
         {
-            get => _configuration.ShowDpsWindow;
+            get => _configuration.DpsWindowEnabled;
             set
             {
-                _configuration.ShowDpsWindow = value;
+                _configuration.DpsWindowEnabled = value;
                 OnPropertyChanged();
             }
         }
 
         public bool EnableSoundEffects
         {
-            get => _configuration.EnableSoundEffects;
+            get => _configuration.AudioEnabled;
             set
             {
-                _configuration.EnableSoundEffects = value;
+                _configuration.AudioEnabled = value;
                 OnPropertyChanged();
             }
         }
@@ -61,7 +63,7 @@ namespace Overstrike.ViewModels
         public ConfigurationViewModel(IConfigurationService configurationService)
         {
             _configurationService = configurationService ?? throw new ArgumentNullException(nameof(configurationService));
-            _configuration = _configurationService.GetConfiguration();
+            _configuration = _configurationService.Configuration;
 
             BrowseLogFileCommand = new RelayCommand(BrowseLogFile);
             SaveCommand = new RelayCommand(Save);
@@ -69,7 +71,9 @@ namespace Overstrike.ViewModels
         }
 
         // Constructor for design-time data
-        public ConfigurationViewModel() : this(App.Current?.Services?.GetService(typeof(IConfigurationService)) as IConfigurationService ?? new ConfigurationService())
+        public ConfigurationViewModel() : this(App.Current?.Services?.GetService(typeof(IConfigurationService)) as IConfigurationService ??
+            new ConfigurationService(App.Current?.Services?.GetService(typeof(ILogger<ConfigurationService>)) as ILogger<ConfigurationService> ??
+            (ILogger<ConfigurationService>)new Microsoft.Extensions.Logging.LoggerFactory().CreateLogger<ConfigurationService>()))
         {
         }
 
@@ -87,11 +91,12 @@ namespace Overstrike.ViewModels
             }
         }
 
-        private void Save()
+        private async void Save()
         {
             try
             {
-                _configurationService.SaveConfiguration(_configuration);
+                // The configuration is already updated through the properties
+                await _configurationService.SaveConfigurationAsync();
                 MessageBox.Show("Configuration saved successfully.", "Overstrike", MessageBoxButton.OK, MessageBoxImage.Information);
                 CloseWindow();
             }
