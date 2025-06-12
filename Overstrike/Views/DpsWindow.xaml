@@ -6,11 +6,12 @@
         mc:Ignorable="d"
         Title="{Binding WindowTitle}" 
         Height="400" Width="600"
-        WindowStyle="ToolWindow"
+        WindowStyle="None"
         Topmost="True"
-        ShowInTaskbar="False"
+        ShowInTaskbar="False" 
         Background="#E0000000"
-        AllowsTransparency="True">
+        AllowsTransparency="True"
+        ResizeMode="CanResize">
     
     <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="5">
         <Grid Margin="5">

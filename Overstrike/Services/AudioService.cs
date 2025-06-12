@@ -117,24 +117,21 @@ public class AudioService : IAudioService, IDisposable
         {
             await Task.Run(() =>
             {
-                // Generate different frequency beeps for different damage types
-                var frequency = damageType switch
-                {
-                    DamageType.Melee => isCritical ? 800 : 600,
-                    DamageType.Spell => isCritical ? 1000 : 700,
-                    DamageType.Heal => isCritical ? 900 : 650,
-                    _ => 500
-                };
-
-                var duration = isCritical ? 200 : 100;
-
-                // Use Windows system beep as fallback
-                Console.Beep(frequency, duration);
+                // Simply log the event instead of generating a beep
+                // Console.Beep is not supported on all platforms
+                _logger.LogInformation("Sound effect for {Type} {Critical}", 
+                    damageType, isCritical ? "critical" : "normal");
+                
+                // No sound on macOS, just log it
+                Console.WriteLine($"Sound played: {damageType} {(isCritical ? "critical" : "normal")}");
+                
+                // Small delay to simulate sound duration
+                Thread.Sleep(isCritical ? 200 : 100);
             });
         }
         catch (Exception ex)
         {
-            _logger.LogWarning(ex, "Failed to generate beep sound");
+            _logger.LogWarning(ex, "Failed to generate sound effect");
         }
     }
 

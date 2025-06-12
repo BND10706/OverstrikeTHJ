@@ -49,8 +49,7 @@ public partial class MainViewModel : ObservableObject
     public ICommand ShowDpsWindowCommand { get; }
     public ICommand ShowConfigurationCommand { get; }
     public ICommand SelectLogFileCommand { get; }
-    public ICommand ToggleEditModeCommand { get; }
-    public ICommand ExitCommand { get; }
+    public ICommand TestDamagePopupsCommand { get; }
 
     public MainViewModel(
         ILogger<MainViewModel> logger,
@@ -72,6 +71,7 @@ public partial class MainViewModel : ObservableObject
         ShowDpsWindowCommand = new AsyncRelayCommand(ShowDpsWindowAsync);
         ShowConfigurationCommand = new RelayCommand(ShowConfiguration);
         SelectLogFileCommand = new AsyncRelayCommand(SelectLogFileAsync);
+        TestDamagePopupsCommand = new RelayCommand(TestDamagePopups);
         ToggleEditModeCommand = new RelayCommand(ToggleEditMode);
         ExitCommand = new RelayCommand(Exit);
 
@@ -248,11 +248,29 @@ public partial class MainViewModel : ObservableObject
             }
         });
 
-        // Show damage popup
-        await _overlayService.ShowDamagePopupAsync(damageEvent);
+        // Log damage event for debugging
+        Console.WriteLine($"EVENT: {damageEvent.Source} -> {damageEvent.Target}: {damageEvent.Amount} {damageEvent.Type}" + 
+                          (damageEvent.IsCritical ? " *CRIT*" : ""));
 
-        // Play audio notification
-        await _audioService.PlayNotificationAsync(damageEvent.Type, damageEvent.IsCritical);
+        try
+        {
+            // Show damage popup with error handling
+            await _overlayService.ShowDamagePopupAsync(damageEvent);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error showing popup: {ex.Message}");
+        }
+
+        try
+        {
+            // Play audio notification with error handling
+            await _audioService.PlayNotificationAsync(damageEvent.Type, damageEvent.IsCritical);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error playing audio: {ex.Message}");
+        }
     }
 
     private void OnDpsDataUpdated(object? sender, Dictionary<string, DpsData> dpsData)
@@ -262,5 +280,60 @@ public partial class MainViewModel : ObservableObject
         {
             _overlayService.UpdateDpsWindow(dpsData);
         }
+    }
+
+    private void TestDamagePopups()
+    {
+        Task.Run(async () => 
+        {
+            Console.WriteLine("Generating test damage popups...");
+            StatusText = "Testing damage popups...";
+
+            // Create test damage events for different types
+            await ShowTestDamagePopup(DamageType.Melee, 100, false, true);
+            await Task.Delay(500);
+            
+            await ShowTestDamagePopup(DamageType.Melee, 500, true, true);
+            await Task.Delay(500);
+            
+            await ShowTestDamagePopup(DamageType.Spell, 250, false, true);
+            await Task.Delay(500);
+            
+            await ShowTestDamagePopup(DamageType.Spell, 1200, true, true);
+            await Task.Delay(500);
+            
+            await ShowTestDamagePopup(DamageType.Heal, 300, false, true);
+            await Task.Delay(500);
+            
+            await ShowTestDamagePopup(DamageType.Heal, 800, true, true);
+            await Task.Delay(500);
+
+            StatusText = "Test popups complete";
+            Console.WriteLine("Test popup generation complete");
+        });
+    }
+
+    private async Task ShowTestDamagePopup(DamageType type, int amount, bool isCritical, bool isOutgoing)
+    {
+        var damageEvent = new DamageEvent
+        {
+            Timestamp = DateTime.Now,
+            Source = isOutgoing ? "You" : "Enemy",
+            Target = isOutgoing ? "Target" : "You",
+            SpellName = type == DamageType.Spell ? "Test Spell" : "",
+            Amount = amount,
+            Type = type,
+            IsCritical = isCritical,
+            IsOutgoing = isOutgoing,
+            RawLine = $"Test {type} damage: {amount}" + (isCritical ? " *CRITICAL*" : "")
+        };
+
+        Console.WriteLine($"Creating test popup: {damageEvent.Type} {damageEvent.Amount} {(damageEvent.IsCritical ? "CRIT" : "")}");
+
+        // Show damage popup
+        await _overlayService.ShowDamagePopupAsync(damageEvent);
+
+        // Also play sound
+        await _audioService.PlayNotificationAsync(type, isCritical);
     }
 }

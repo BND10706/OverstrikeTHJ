@@ -8,7 +8,7 @@ namespace Overstrike.Models;
 /// </summary>
 public class Placement
 {
-    public bool IsVisible { get; set; }
+    public bool IsVisible { get; set; } = true;
     public bool IsTallyEnabled { get; set; }
     public Rectangle WindowRect { get; set; }
     public System.Windows.Media.Color FontColor { get; set; }

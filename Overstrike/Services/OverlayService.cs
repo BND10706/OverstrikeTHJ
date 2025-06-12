@@ -27,22 +27,58 @@ public class OverlayService : IOverlayService
         {
             try
             {
+                // Add explicit console message for debugging
+                Console.WriteLine($"Showing damage popup for {damageEvent.Amount} {damageEvent.Type} damage from {damageEvent.Source} to {damageEvent.Target}");
+                
                 var placement = GetPlacementForDamageEvent(damageEvent);
-                if (placement == null || !placement.IsVisible) return;
+                if (placement == null)
+                {
+                    Console.WriteLine("Placement was null - no popup shown");
+                    return;
+                }
+                
+                // Always force visibility on for debugging overlay issues
+                placement.IsVisible = true;
+                
+                if (!placement.IsVisible)
+                {
+                    Console.WriteLine($"Placement for {damageEvent.Type} is not visible - no popup shown");
+                    return;
+                }
 
+                // Make sure we have valid coordinates to use for placement
+                if (placement.WindowRect.Width <= 0 || placement.WindowRect.Height <= 0)
+                {
+                    Console.WriteLine("Fixing invalid window rect dimensions");
+                    placement.WindowRect = new System.Drawing.Rectangle(
+                        placement.WindowRect.X > 0 ? placement.WindowRect.X : 200,
+                        placement.WindowRect.Y > 0 ? placement.WindowRect.Y : 200,
+                        Math.Max(200, placement.WindowRect.Width),
+                        Math.Max(100, placement.WindowRect.Height)
+                    );
+                }
+
+                Console.WriteLine($"Creating popup at position {placement.WindowRect.X},{placement.WindowRect.Y}");
+                
                 var popup = new DamagePopup(damageEvent, placement);
                 _activePopups.Add(popup);
 
                 // Remove popup when it completes its animation
                 popup.Closed += (s, e) => _activePopups.Remove(popup);
 
+                // Force window to be visible and on top
+                popup.Topmost = true;
+                popup.Visibility = System.Windows.Visibility.Visible;
                 popup.Show();
+                popup.Activate();
+                
                 _logger.LogDebug("Showed damage popup for {Amount} {Type} damage",
                     damageEvent.Amount, damageEvent.Type);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Failed to show damage popup");
+                Console.WriteLine($"Error showing popup: {ex.Message}");
             }
         });
     }

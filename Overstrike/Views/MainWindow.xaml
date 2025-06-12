@@ -109,6 +109,11 @@
                         <Button Content="Toggle Edit Mode" 
                                Command="{Binding ToggleEditModeCommand}"
                                Margin="0,0,0,5" Padding="10,3"/>
+                        <!-- Test Button for Debugging -->
+                        <Button Content="Test Damage Popups" 
+                               Command="{Binding TestDamagePopupsCommand}"
+                               Margin="0,0,0,5" Padding="10,3" 
+                               Background="Orange" Foreground="White"/>
                     </StackPanel>
                 </GroupBox>
             </StackPanel>

@@ -34,13 +34,22 @@ public partial class DamagePopup : Window
         AllowsTransparency = true;
         Background = Brushes.Transparent;
 
+        // Enhanced debug output
+        Console.WriteLine($"Configuring popup window for {_damageEvent.Amount} damage");
+        Console.WriteLine($"Placement rect: {_placement.WindowRect}, IsVisible: {_placement.IsVisible}");
+        
         // Set position based on placement configuration
         Left = _placement.WindowRect.X + _placement.LastSpawnX;
         Top = _placement.WindowRect.Y + _placement.LastSpawnY;
+        
+        Console.WriteLine($"Window position set to: {Left}, {Top}");
 
         // Update spawn position for next popup
         _placement.LastSpawnX += 50;
         _placement.LastSpawnY += 30;
+        
+        // Set visibility explicitly
+        Visibility = Visibility.Visible;
 
         // Reset position if it goes off screen
         if (Left > SystemParameters.PrimaryScreenWidth - 200)
@@ -106,24 +115,29 @@ public partial class DamagePopup : Window
         var moveDirection = _placement.Direction;
         double moveX = 0, moveY = 0;
 
+        // Enhance movement distance for better visibility
+        int distance = 150;
+        
         switch (moveDirection)
         {
             case Direction.Up:
-                moveY = -100;
+                moveY = -distance;
                 break;
             case Direction.Down:
-                moveY = 100;
+                moveY = distance;
                 break;
             case Direction.Left:
-                moveX = -100;
+                moveX = -distance;
                 break;
             case Direction.Right:
-                moveX = 100;
+                moveX = distance;
                 break;
         }
 
-        // Create animations
-        var duration = TimeSpan.FromSeconds(2);
+        Console.WriteLine($"Starting animation with direction {moveDirection}: moveX={moveX}, moveY={moveY}");
+
+        // Create animations with slightly longer duration for testing
+        var duration = TimeSpan.FromSeconds(3);
 
         // Movement animation
         var moveXAnimation = new DoubleAnimation(Left, Left + moveX, duration)
@@ -135,10 +149,10 @@ public partial class DamagePopup : Window
             EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseOut }
         };
 
-        // Fade out animation
+        // Fade out animation - start fading later for better visibility during testing
         var fadeAnimation = new DoubleAnimation(1.0, 0.0, duration)
         {
-            BeginTime = TimeSpan.FromSeconds(0.5),
+            BeginTime = TimeSpan.FromSeconds(1.5),
             EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseIn }
         };
 
