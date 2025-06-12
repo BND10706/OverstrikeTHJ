@@ -124,6 +124,9 @@ public class LogTrackerService : ILogTrackerService, IDisposable
         _lastPosition = 0;
 
         _logger.LogInformation("Stopped tracking log file");
+
+        // Add await to prevent compiler warning about async method lacking await operators
+        await Task.CompletedTask;
     }
 
     private async void OnFileChanged(object sender, FileSystemEventArgs e)

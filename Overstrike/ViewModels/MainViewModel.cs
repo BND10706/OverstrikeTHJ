@@ -50,6 +50,8 @@ public partial class MainViewModel : ObservableObject
     public ICommand ShowConfigurationCommand { get; }
     public ICommand SelectLogFileCommand { get; }
     public ICommand TestDamagePopupsCommand { get; }
+    public ICommand ToggleEditModeCommand { get; }
+    public ICommand ExitCommand { get; }
 
     public MainViewModel(
         ILogger<MainViewModel> logger,
@@ -249,7 +251,7 @@ public partial class MainViewModel : ObservableObject
         });
 
         // Log damage event for debugging
-        Console.WriteLine($"EVENT: {damageEvent.Source} -> {damageEvent.Target}: {damageEvent.Amount} {damageEvent.Type}" + 
+        Console.WriteLine($"EVENT: {damageEvent.Source} -> {damageEvent.Target}: {damageEvent.Amount} {damageEvent.Type}" +
                           (damageEvent.IsCritical ? " *CRIT*" : ""));
 
         try
@@ -284,7 +286,7 @@ public partial class MainViewModel : ObservableObject
 
     private void TestDamagePopups()
     {
-        Task.Run(async () => 
+        Task.Run(async () =>
         {
             Console.WriteLine("Generating test damage popups...");
             StatusText = "Testing damage popups...";
@@ -292,19 +294,19 @@ public partial class MainViewModel : ObservableObject
             // Create test damage events for different types
             await ShowTestDamagePopup(DamageType.Melee, 100, false, true);
             await Task.Delay(500);
-            
+
             await ShowTestDamagePopup(DamageType.Melee, 500, true, true);
             await Task.Delay(500);
-            
+
             await ShowTestDamagePopup(DamageType.Spell, 250, false, true);
             await Task.Delay(500);
-            
+
             await ShowTestDamagePopup(DamageType.Spell, 1200, true, true);
             await Task.Delay(500);
-            
+
             await ShowTestDamagePopup(DamageType.Heal, 300, false, true);
             await Task.Delay(500);
-            
+
             await ShowTestDamagePopup(DamageType.Heal, 800, true, true);
             await Task.Delay(500);
 

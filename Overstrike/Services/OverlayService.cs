@@ -29,17 +29,17 @@ public class OverlayService : IOverlayService
             {
                 // Add explicit console message for debugging
                 Console.WriteLine($"Showing damage popup for {damageEvent.Amount} {damageEvent.Type} damage from {damageEvent.Source} to {damageEvent.Target}");
-                
+
                 var placement = GetPlacementForDamageEvent(damageEvent);
                 if (placement == null)
                 {
                     Console.WriteLine("Placement was null - no popup shown");
                     return;
                 }
-                
+
                 // Always force visibility on for debugging overlay issues
                 placement.IsVisible = true;
-                
+
                 if (!placement.IsVisible)
                 {
                     Console.WriteLine($"Placement for {damageEvent.Type} is not visible - no popup shown");
@@ -59,7 +59,7 @@ public class OverlayService : IOverlayService
                 }
 
                 Console.WriteLine($"Creating popup at position {placement.WindowRect.X},{placement.WindowRect.Y}");
-                
+
                 var popup = new DamagePopup(damageEvent, placement);
                 _activePopups.Add(popup);
 
@@ -71,7 +71,7 @@ public class OverlayService : IOverlayService
                 popup.Visibility = System.Windows.Visibility.Visible;
                 popup.Show();
                 popup.Activate();
-                
+
                 _logger.LogDebug("Showed damage popup for {Amount} {Type} damage",
                     damageEvent.Amount, damageEvent.Type);
             }

@@ -29,8 +29,14 @@ namespace Overstrike.Utilities
             Log("INFO", message);
         }
 
-        public static void LogError(string context, Exception ex)
+        public static void LogError(string context, Exception? ex)
         {
+            if (ex == null)
+            {
+                Log("ERROR", $"{context}: No exception details available");
+                return;
+            }
+
             Log("ERROR", $"{context}: {ex.Message}");
             Log("STACK", ex.StackTrace ?? "No stack trace available");
 

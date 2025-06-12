@@ -119,12 +119,12 @@ public class AudioService : IAudioService, IDisposable
             {
                 // Simply log the event instead of generating a beep
                 // Console.Beep is not supported on all platforms
-                _logger.LogInformation("Sound effect for {Type} {Critical}", 
+                _logger.LogInformation("Sound effect for {Type} {Critical}",
                     damageType, isCritical ? "critical" : "normal");
-                
+
                 // No sound on macOS, just log it
                 Console.WriteLine($"Sound played: {damageType} {(isCritical ? "critical" : "normal")}");
-                
+
                 // Small delay to simulate sound duration
                 Thread.Sleep(isCritical ? 200 : 100);
             });

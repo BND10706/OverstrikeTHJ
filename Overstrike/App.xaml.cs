@@ -73,12 +73,12 @@ public partial class App : Application
                     "Overstrike - Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
 
                 var viewModel = new MainViewModel(
-                    _host.Services.GetService<ILogger<MainViewModel>>(),
-                    _host.Services.GetService<IConfigurationService>(),
-                    _host.Services.GetService<ILogTrackerService>(),
-                    _host.Services.GetService<IAudioService>(),
-                    _host.Services.GetService<IDpsCalculatorService>(),
-                    _host.Services.GetService<IOverlayService>()
+                    _host.Services.GetService<ILogger<MainViewModel>>()!,
+                    _host.Services.GetService<IConfigurationService>()!,
+                    _host.Services.GetService<ILogTrackerService>()!,
+                    _host.Services.GetService<IAudioService>()!,
+                    _host.Services.GetService<IDpsCalculatorService>()!,
+                    _host.Services.GetService<IOverlayService>()!
                 );
 
                 var window = new MainWindow(viewModel)

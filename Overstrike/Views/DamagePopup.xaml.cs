@@ -37,17 +37,17 @@ public partial class DamagePopup : Window
         // Enhanced debug output
         Console.WriteLine($"Configuring popup window for {_damageEvent.Amount} damage");
         Console.WriteLine($"Placement rect: {_placement.WindowRect}, IsVisible: {_placement.IsVisible}");
-        
+
         // Set position based on placement configuration
         Left = _placement.WindowRect.X + _placement.LastSpawnX;
         Top = _placement.WindowRect.Y + _placement.LastSpawnY;
-        
+
         Console.WriteLine($"Window position set to: {Left}, {Top}");
 
         // Update spawn position for next popup
         _placement.LastSpawnX += 50;
         _placement.LastSpawnY += 30;
-        
+
         // Set visibility explicitly
         Visibility = Visibility.Visible;
 
@@ -117,7 +117,7 @@ public partial class DamagePopup : Window
 
         // Enhance movement distance for better visibility
         int distance = 150;
-        
+
         switch (moveDirection)
         {
             case Direction.Up:
